@@ -1,5 +1,6 @@
 import 'package:chatcptapp/constants/constants.dart';
 import 'package:chatcptapp/widgets/chat_widget.dart';
+import 'package:chatcptapp/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../services/assets_manager.dart';
@@ -31,15 +32,45 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          elevation: 2,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(AssetManager.openaiLogo),
-          ),
-          title: const Text('AI Chart'),
-          actions: [
-            IconButton(onPressed: () {}, icon:  const Icon(Icons.more_vert_rounded, color: Colors.white,))
-          ],),
+        elevation: 2,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(AssetManager.openaiLogo),
+        ),
+        title: const Text('AI Chart'),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.horizontal(
+                        left: Radius.circular(17),
+                        right: Radius.circular(20)
+                        )
+                    ),
+                    backgroundColor: scaffoldBackgroundColor,
+                    context: context,
+                    builder: (context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Row(
+                          children: const [
+                            Flexible(
+                                child: TextWidget(
+                              label: "choose modal",
+                              fontSize: 16,
+                            ))
+                          ],
+                        ),
+                      );
+                    });
+              },
+              icon: const Icon(
+                Icons.more_vert_rounded,
+                color: Colors.white,
+              ))
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -49,7 +80,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemBuilder: (context, index) {
                   return ChatWidget(
                     msg: chatMessages[index]["msg"].toString(),
-                    chatIndex: int.parse(chatMessages[index]["chatIndex"].toString()) ,
+                    chatIndex:
+                        int.parse(chatMessages[index]["chatIndex"].toString()),
                   );
                 },
               ),
@@ -57,7 +89,9 @@ class _ChatScreenState extends State<ChatScreen> {
             if (_isTyping) ...[
               const SpinKitThreeBounce(color: Colors.white, size: 18)
             ],
-            SizedBox(height: 15,),
+            const SizedBox(
+              height: 15,
+            ),
             Material(
               color: cardColor,
               child: Row(
@@ -71,11 +105,15 @@ class _ChatScreenState extends State<ChatScreen> {
                         hintText: "How can I help u",
                         hintStyle: TextStyle(color: Colors.grey)),
                   )),
-                   IconButton(onPressed: () {}, icon: const Icon(Icons.send, color: Colors.white,))
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      ))
                 ],
               ),
             ), // input box
-           
           ],
         ),
       ),
