@@ -4,6 +4,7 @@ import 'package:chatcptapp/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../services/assets_manager.dart';
+import '../services/services.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -41,29 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                await showModalBottomSheet(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(17),
-                        right: Radius.circular(20)
-                        )
-                    ),
-                    backgroundColor: scaffoldBackgroundColor,
-                    context: context,
-                    builder: (context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          children: const [
-                            Flexible(
-                                child: TextWidget(
-                              label: "choose modal",
-                              fontSize: 16,
-                            ))
-                          ],
-                        ),
-                      );
-                    });
+                await Services.showModalSheet(context: context);
               },
               icon: const Icon(
                 Icons.more_vert_rounded,
