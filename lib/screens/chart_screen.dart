@@ -1,4 +1,5 @@
 import 'package:chatcptapp/constants/constants.dart';
+import 'package:chatcptapp/services/api_services.dart';
 import 'package:chatcptapp/widgets/chat_widget.dart';
 import 'package:chatcptapp/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         hintStyle: TextStyle(color: Colors.grey)),
                   )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        try { 
+                          await ApiService.getModals();
+                        } catch(e) {}
+                      },
                       icon: const Icon(
                         Icons.send,
                         color: Colors.white,
