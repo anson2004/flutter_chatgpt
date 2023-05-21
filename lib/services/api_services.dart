@@ -17,7 +17,7 @@ class ApiService {
         // print("Http error ${jsonResponse['error']['message']}");
         throw HttpException(jsonResponse['error']['message']);
       }
-      // log("jsonRes $jsonResponse");
+      // print("jsonRes $jsonResponse");
 
       List temp = [];
       for (var v in jsonResponse['data']) {
@@ -25,6 +25,7 @@ class ApiService {
         // print("temp ${v["id"]}");
       }
       var ret =  ModelsModel.modelsFromSnapshot(temp);
+      //print(ret.toString());
       return ret;
       
 

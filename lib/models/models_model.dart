@@ -8,7 +8,7 @@ class ModelsModel {
   factory ModelsModel.fromJson(Map<String, dynamic> json) => ModelsModel(
         id: json["id"],
         created: json["created"],
-        root: json["rooted"],
+        root: json["root"],
       );
   static List<ModelsModel> modelsFromSnapshot(List modelSnapshot) {
     return modelSnapshot.map((data) => ModelsModel.fromJson(data)).toList();
