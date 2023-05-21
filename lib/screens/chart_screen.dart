@@ -4,6 +4,8 @@ import 'package:chatcptapp/widgets/chat_widget.dart';
 import 'package:chatcptapp/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import '../providers/modals_provider.dart';
 import '../services/assets_manager.dart';
 import '../services/services.dart';
 
@@ -15,7 +17,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final bool _isTyping = true;
+  bool _isTyping = false;
   late TextEditingController textEditingController;
 
   @override
@@ -32,6 +34,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final modelsProvider = Provider.of<ModelsProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
@@ -87,9 +91,19 @@ class _ChatScreenState extends State<ChatScreen> {
                   )),
                   IconButton(
                       onPressed: () async {
-                        try { 
-                          await ApiService.getModals();
-                        } catch(e) {}
+                        try {
+                           setState(() {
+                             _isTyping = true;
+                           });
+                          await ApiService.sendMessage(
+                              message: textEditingController.text,
+                              modelId: modelsProvider.getCurrentModel);
+                        } catch (e) {}
+                        finally {
+                          setState(() {
+                             _isTyping = false;
+                           });
+                        }
                       },
                       icon: const Icon(
                         Icons.send,
