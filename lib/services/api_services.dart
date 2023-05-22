@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:chatcptapp/models/chat_model.dart';
 import 'package:chatcptapp/models/models_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,7 +33,7 @@ class ApiService {
     }
   }
 
-  static Future<void> sendMessage(
+  static Future<List<ChatModel>> sendMessage(
       {required String message, required String modelId}) async {
     try {
       print("message $message");
@@ -41,25 +42,32 @@ class ApiService {
       var response = await http.post(Uri.parse('$BASE_URL/completions'),
           headers: {
             "Authorization": "Bearer $API_KEY",
-             "Content-Type": "application/json"
+            "Content-Type": "application/json"
           },
-          body: jsonEncode( {
-            "model": modelId,
-            "prompt": message,
-            "max_tokens": 10,
-          },));
+          body: jsonEncode(
+            {
+              "model": modelId,
+              "prompt": message,
+              "max_tokens": 10,
+            },
+          ));
       Map jsonResponse = jsonDecode(response.body);
       if (jsonResponse['error'] != null) {
         print("err ${jsonResponse['error']['message']}");
-
         throw HttpException(jsonResponse['error']['message']);
       }
-      print("jsonRes $jsonResponse");
+      List<ChatModel> chatList = [];
 
-      if (jsonResponse['choices'].length > 0 ) {
-        print("jjj ${jsonResponse['choices'][0]['text']}");
+      if (jsonResponse['choices'].length > 0) {
+        chatList = List.generate(
+            jsonResponse['choices'].length,
+            (index) => ChatModel(
+                msg: jsonResponse['choices'][index]['text'], 
+                chatIndex: 1
+              ));
       }
-      
+
+      return chatList;
     } catch (error) {
       log("error $error");
       rethrow;
