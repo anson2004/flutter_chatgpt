@@ -1,3 +1,4 @@
+import 'package:chatcptapp/providers/chat_provider.dart';
 import 'package:chatcptapp/providers/modals_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ModelsProvider())
+        ChangeNotifierProvider(create: (_) => ModelsProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
